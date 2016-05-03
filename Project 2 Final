@@ -1,0 +1,224 @@
+Scene myScene;
+Gold myGold;
+Hero myHero;
+Action myAction;
+Dog myDog;
+Puppy myPuppy;
+Monster myMonster;
+
+void setup() {
+  size(600, 600);  //screen size
+  myScene = new Scene();
+  myGold = new Gold();
+  myHero = new Hero();
+  myAction = new Action();
+  myDog= new Dog();
+  myPuppy= new Puppy();
+  myMonster = new Monster();
+}
+
+void draw(){
+
+myScene.display();
+myScene.sunmove();
+myGold.display();
+myHero.display();
+myAction.heromove();
+myDog.showDog();
+myDog.dogMove();
+myPuppy.showPuppy();
+myPuppy.puppyMove();
+myMonster.showMonster();
+myMonster.monsterMove();
+}  
+
+void mousePressed(){
+  myGold.mousePressed();
+ }
+
+
+class Scene {
+float sunX, sunY; //variables for sun
+  
+ Scene(){
+      sunX=  width/2;   // Reset the sun position.
+      sunY= random (200, 250);
+ }
+ void sunmove(){
+    sunX = sunX + 1; //add 1 to position of sun
+    if (sunX > width){
+    sunX=  0;
+    sunY=  random( 200, 220 ); // randomly changes the height of the sun
+ }
+ }
+ 
+  void display(){
+    background(0, 175, 255);//background color
+    fill(0, 200, 0); //green grass rectangle color
+    rect(0, 350, 600, 300); //rectangle size
+    //SUN
+    fill(255, 255, 0); //sun color
+    ellipse( sunX, sunY, 30, 30 );   // Yellow sun 
+    //HOUSE
+    fill(255, 0, 0 ); // house color 
+    rect(200, 300, 100, 50 ); //house size
+    triangle( 190, 300, 310, 300, 250, 250 );  // roof size
+    fill(218,165,32);//door color
+    rect(235,310,25,40); //door size
+    fill(240,248,255); // window color
+    rect(210,310,20,20); // window left
+    rect(265,310,20,20); //window right
+    //Tree
+    fill(139,69,19);
+    rect(400,250,30,100);
+    fill(0,100,0);
+    ellipse(415,250,70,70);
+  }
+}
+
+class Gold{
+ float xGold, yGold; //position of gold
+ float g; // variables for colors
+ void mousePressed(){
+   xGold= mouseX;
+   yGold= mouseY;
+ }
+ Gold(){
+
+ } 
+
+ void display(){
+    g = random(255);
+    fill(218,g,32);
+    ellipse( xGold, yGold, 60,40 );
+    fill(255,25,0);
+    ellipse( xGold, yGold, 30,20 );
+ }
+}
+
+class Hero{
+  float xPhil, yPhil; // position of phil
+  float r,g,b; // variables for colors
+Hero(){
+  r = random(255);
+  g = random(255);
+  b = random(255);
+}
+
+
+void display(){
+  fill(255,69,0); // body color
+    rect( xPhil,yPhil, 35, 60 ); // hero body
+    fill(255,228,181); //head color
+    ellipse( xPhil+18,yPhil, 40, 40 ); // head on top
+    fill(0,0,0);
+    text( "PHIL", xPhil+5,yPhil+40 ); //name
+    // eyes.
+    fill( r,g,b);
+    ellipse(xPhil+10,yPhil-5 , 12, 12 );
+    ellipse(xPhil+25,yPhil-5, 12, 12 );
+   //legs  
+    fill(160,82,45);
+    rect( xPhil,yPhil+60,10,40 ); //left leg
+    rect( xPhil+25,yPhil+60,10,40 ); //right let
+   //arms
+   fill(160,82,45);
+    rect( xPhil-10,yPhil,10,30 ); //left arm
+    rect( xPhil+35,yPhil,10,30 ); //right arm
+}
+}
+
+
+class Action{
+//float xGold, yGold; //position of gold
+//float xPhil, yPhil; // position of phil
+
+Action(){
+   myGold.xGold= mouseX;
+   myGold.yGold= mouseY;
+  
+}
+  void heromove(){
+    myHero.xPhil= myHero.xPhil +(myGold.xGold-myHero.xPhil)/15;
+    myHero.yPhil= myHero.yPhil +(myGold.yGold-myHero.yPhil)/15;
+  if( dist(myHero.xPhil,myHero.yPhil,myGold.xGold,myGold.yGold) <20 ){
+      myGold.xGold = random(width);
+      myGold.yGold = random(height);
+  }
+  }
+ 
+}
+
+class Dog{
+  float x;
+  float y;
+  Dog(){
+   x= width/2;
+   y= 200;
+  }  
+ void showDog(){
+  fill(0,0,0);
+  rect(x,y,40,20);
+  rect(x,y+20,2,20);
+  rect(x+38,y+20,2,20);
+  rect(x+40,y-10,15,15);
+  fill(25,255,255);
+  ellipse(x+50,y,5,5);
+ 
+ } 
+void dogMove(){
+    myDog.x= myDog.x +(myHero.xPhil-myDog.x)/15;
+    myDog.y= myDog.y +(myHero.yPhil-myDog.y)/15;
+  
+ } 
+}
+
+class Puppy{
+  float x;
+  float y;
+  Puppy(){
+   x= width/3;
+   y= 300;
+  }  
+ void showPuppy(){
+  fill(0,0,0);
+  rect(x,y,30,10);
+  rect(x,y+10,1,10);
+  rect(x+28,y+10,1,10);
+  rect(x+30,y-5,10,10);
+  fill(25,255,255);
+  ellipse(x+35,y,5,5);
+ 
+ } 
+void puppyMove(){
+    myPuppy.x= myPuppy.x +(myDog.x-myPuppy.x)/15;
+    myPuppy.y= myPuppy.y +(myDog.y-myPuppy.y)/15;
+  
+ } 
+}
+
+class Monster{
+  float x;
+  float y;
+  float r,g,b;
+ Monster(){
+   x = width/4;
+    y=100;
+    r = random(255);
+    g = random(255);
+    b = random(255);
+ }
+ void showMonster(){
+   fill(255,255,255);
+   rect(x,y,50,50);
+   ellipse(x+25,y-25,40,50);
+   fill(r,g,b);
+   ellipse( x+25,y-25,20,20);
+     
+ }
+ 
+ void monsterMove(){
+   myMonster.x= myMonster.x +(myPuppy.x-myMonster.x)/15;
+    myMonster.y= myMonster.y +(myPuppy.y-myMonster.y)/15;
+ } 
+}
